@@ -1,6 +1,8 @@
 package com.example.motorshop.activity.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -10,11 +12,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.motorshop.activity.R;
+import com.example.motorshop.activity.product.QuanLyXeActivity;
 import com.example.motorshop.datasrc.Main;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     ImageView imvMain;
     TextView tvMain;
@@ -51,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 if(position == 1){
-
+                    Intent intent = new Intent(getApplicationContext(), QuanLyXeActivity.class);
+                    startActivity(intent);
+                    Log.d(TAG, "onItemClick gridview: " + itemList.get(position).getName());
                 }
                 if(position == 2){
 

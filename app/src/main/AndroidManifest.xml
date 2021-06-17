@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.motorshop.activity">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -10,10 +16,26 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/Theme.MotorShop"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.MotorShop">
+        tools:targetApi="m">
+
+        <activity
+            android:name=".product.ChiTietXeActivity"
+            android:parentActivityName=".product.QuanLyXeActivity" />
+        <activity
+            android:name=".product.QuanLyPhuTungActivity"
+            android:parentActivityName=".main.MainActivity" />
+        <activity android:name=".product.SuaPhuTungActivity" />
+        <activity android:name=".product.ThemPhuTungActivity" />
+        <activity android:name=".product.SuaXeActivity" />
+        <activity android:name=".product.ThemXeActivity" />
+        <activity
+            android:name=".product.QuanLyXeActivity"
+            android:parentActivityName=".main.MainActivity" />
 
         <activity android:name=".login.LoginActivity">
             <intent-filter>
@@ -23,12 +45,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".login.VerifyActivity"
-            android:parentActivityName=".login.LoginActivity"/>
+        <activity
+            android:name=".login.VerifyActivity"
+            android:parentActivityName=".login.LoginActivity" />
 
-        <activity android:name=".main.MainActivity"
-            android:parentActivityName=".login.LoginActivity"/>
-
+        <activity
+            android:name=".main.MainActivity"
+            android:parentActivityName=".login.LoginActivity" />
 
 
     </application>
