@@ -76,16 +76,6 @@
                 app:iconifiedByDefault="false"
                 app:queryHint="Nhập tên phụ tùng" />
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchHang"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_edit"
-                android:gravity="center"
-                android:theme="@style/AppSearchView"
-                app:iconifiedByDefault="false"
-                app:queryHint="Nhập mã nhà cung cấp" />
 
         </LinearLayout>
 

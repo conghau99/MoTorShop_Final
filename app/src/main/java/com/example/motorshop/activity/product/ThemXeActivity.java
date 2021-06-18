@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -148,9 +149,46 @@ public class ThemXeActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
+
         }
 
         String url = "http://192.168.1.44:8080/api/motorshop/motors";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response is: "+ response.toString().substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void postImage() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject object = new JSONObject();
+        try {
+            //input your API parameters
+
+            //chuyển data imageview -> byte[]
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+            byte[] hinhAnh = byteArray.toByteArray();
+
+            object.put("image", Arrays.toString(hinhAnh).trim());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://192.168.1.44:8080/api/motorshop/images";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -203,13 +241,12 @@ public class ThemXeActivity extends AppCompatActivity {
         }
 
         postData();
+        postImage();
         Toast.makeText(ThemXeActivity.this, "Thêm Xe Thành Công", Toast.LENGTH_SHORT).show();
         //finish();
         Intent intent = new Intent(this, QuanLyXeActivity.class);
         startActivity(intent);
-
     }
-
 
     public void quayLaiXe(View view) {
         Intent intent = new Intent(ThemXeActivity.this, QuanLyXeActivity.class);

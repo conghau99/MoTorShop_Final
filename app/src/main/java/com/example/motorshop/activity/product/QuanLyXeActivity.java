@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,10 +45,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuanLyXeActivity extends AppCompatActivity {
+
     ListView lvHienThiXe;
     SearchView searchTenXe, searchHang;
     List<Motor> motorList;
-    List<Image> images;
+    @Nullable List<Image> images;
     DanhSachXeAdapter danhSachXeAdapter;
 
     @Override
@@ -62,6 +64,7 @@ public class QuanLyXeActivity extends AppCompatActivity {
         images = new ArrayList<>();
 
         extractMoTors();
+        extractImages();
 
         setEvent();
         setClick();
@@ -69,7 +72,7 @@ public class QuanLyXeActivity extends AppCompatActivity {
 
     private void setEvent() {
 
-        /*SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchTenXe.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchTenXe.setSubmitButtonEnabled(true);
         searchTenXe.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -86,30 +89,11 @@ public class QuanLyXeActivity extends AppCompatActivity {
             }
         });
 
-        SearchManager searchManager1 = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchHang.setSearchableInfo(searchManager1.getSearchableInfo(getComponentName()));
-        searchHang.setSubmitButtonEnabled(true);
-        searchHang.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchNCC(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchNCC(newText);
-                return false;
-            }
-        });*/
-
     }
-
 
     private void setControl() {
         lvHienThiXe = (ListView) findViewById(R.id.lvHienThiXe);
         searchTenXe = (SearchView) findViewById(R.id.searchTenXe);
-        searchHang = (SearchView) findViewById(R.id.searchHang);
     }
 
     private void extractMoTors() {
@@ -139,7 +123,46 @@ public class QuanLyXeActivity extends AppCompatActivity {
                     }
                 }
 
-                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList);
+                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
+                danhSachXeAdapter.notifyDataSetChanged();
+                lvHienThiXe.setAdapter(danhSachXeAdapter);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
+
+    }
+
+    private void extractImages() {
+        String url = "http://192.168.1.44:8080/api/motorshop/images";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println("Response is: " + response.toString());
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        Image image = new Image();
+                        image.setMotorId(jsonObject.getInt("motorId"));
+                        image.setImage(jsonObject.getString("image").getBytes());
+                        Log.d("deserialize", jsonObject.getString("image"));
+                        images.add(image);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
                 danhSachXeAdapter.notifyDataSetChanged();
                 lvHienThiXe.setAdapter(danhSachXeAdapter);
 
@@ -156,21 +179,50 @@ public class QuanLyXeActivity extends AppCompatActivity {
     }
 
 
-    /*private void searchXe(String keyword){
-        DBManager dbManager = new DBManager(getApplicationContext());
-        ArrayList<Xe> xes = dbManager.searchXe(keyword);
-        if (xes != null){
-            lvHienThiXe.setAdapter(new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, xes));
-        }
+    private void searchXe(String keyword){
+
+        String url = "http://192.168.1.44:8080/api/motorshop/motors/name?name=" + keyword;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println("Response is: " + response.toString());
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        Motor motor = new Motor();
+                        motor.setId(jsonObject.getInt("id"));
+                        motor.setName(jsonObject.getString("name"));
+                        motor.setAmount(jsonObject.getInt("amount"));
+                        motor.setPrice(jsonObject.getInt("price"));
+                        motor.setWarrantyPeriod(jsonObject.getInt("warrantyPeriod"));
+                        motor.setBrandId(jsonObject.getString("brandId"));
+                        Log.d("deserialize", jsonObject.getString("name"));
+                        motorList.add(motor);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (motorList != null){
+                    lvHienThiXe.setAdapter(new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
+
     }
 
-    private void searchNCC(String keyword){
-        DBManager dbManager = new DBManager(getApplicationContext());
-        ArrayList<Xe> xes = dbManager.searchNCC(keyword);
-        if (xes != null){
-            lvHienThiXe.setAdapter(new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, xes));
-        }
-    }*/
 
     private void setClick() {
 

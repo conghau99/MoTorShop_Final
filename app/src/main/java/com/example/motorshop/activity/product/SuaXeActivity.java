@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -50,7 +52,7 @@ public class SuaXeActivity extends AppCompatActivity {
     int ma;
 
     Motor motor;
-    Image image;
+    @Nullable Image image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class SuaXeActivity extends AppCompatActivity {
         spnHangXe.setAdapter(adapterHang);
 
         ChonXe(motor);
+        //ChonImage(image);
 
         btnChonAnh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,31 +126,6 @@ public class SuaXeActivity extends AppCompatActivity {
                 });
     }
 
-    private Image getImage(){
-        Image item = new Image();
-
-        //chuyển data imageview -> byte[]
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
-        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
-        byte[] hinhAnh = byteArray.toByteArray();
-
-        item.setImage(hinhAnh);
-        return item;
-    }
-
-
-    public void ChonImage(Image image) {
-        this.image = image;
-        Intent intent = getIntent();
-        byte[] hinhAnh = intent.getByteArrayExtra("hinhAnh");
-        //chuyển byte [] -> bitmap
-        Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
-        ivPhoTo.setImageBitmap(bitmap);
-    }
-
     public void editData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JSONObject object = new JSONObject();
@@ -174,7 +152,7 @@ public class SuaXeActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response is: "+ response.toString().substring(0,500));
+                        System.out.println("Response is: "+ response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -183,6 +161,53 @@ public class SuaXeActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(jsonObjectRequest);
+    }
+
+    public void editImage() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject object = new JSONObject();
+        try {
+            //input your API parameters
+
+            //chuyển data imageview -> byte[]
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+            byte[] hinhAnh = byteArray.toByteArray();
+
+            object.put("image", Arrays.toString(hinhAnh).trim());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://192.168.1.44:8080/api/motorshop/images";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response is: "+ response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void ChonImage(Image image) {
+        this.image = image;
+        Intent intent = getIntent();
+
+        byte[] hinhAnh = intent.getByteArrayExtra("hinhAnh");
+
+        //chuyển byte [] -> bitmap
+        Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
+        ivPhoTo.setImageBitmap(bitmap);
     }
 
     public void ChonXe(Motor motor) {
@@ -199,10 +224,6 @@ public class SuaXeActivity extends AppCompatActivity {
         int hanBH = intent.getIntExtra("hanBH",0);
         edtHanBaoHanh.setText(Integer.toString(hanBH));
 
-        //byte[] hinhAnh = intent.getByteArrayExtra("hinhAnh");
-        //chuyển byte [] -> bitmap
-        //Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
-        //ivPhoTo.setImageBitmap(bitmap);
     }
 
     private boolean checkNullInfo(EditText e) {
@@ -243,6 +264,7 @@ public class SuaXeActivity extends AppCompatActivity {
 
 
         editData();
+        editImage();
         Toast.makeText(SuaXeActivity.this, "Sửa Xe Thành Công", Toast.LENGTH_SHORT).show();
         //finish();
         Intent intent = new Intent(this, QuanLyXeActivity.class);

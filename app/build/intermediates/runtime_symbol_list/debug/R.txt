@@ -2334,11 +2334,13 @@ int id transition_position 0x7f0901e0
 int id transition_scene_layoutid_cache 0x7f0901e1
 int id transition_transform 0x7f0901e2
 int id triangle 0x7f0901e3
+int id tvChiTietPhuTung 0x7f090209
 int id tvChiTietXe 0x7f0901e4
 int id tvDonGia 0x7f0901e5
 int id tvGia 0x7f0901e6
 int id tvGuest 0x7f0901e7
 int id tvHanBaoHanh 0x7f0901e8
+int id tvMaPhuTung 0x7f09020a
 int id tvMaXe 0x7f0901e9
 int id tvMain 0x7f0901ea
 int id tvSignUp 0x7f0901eb

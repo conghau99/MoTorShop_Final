@@ -23,13 +23,14 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
     Context context;
     int resource;
     public ArrayList<Motor> data;
-    public ArrayList<Image> images;
+    @Nullable public ArrayList<Image> images;
 
-    public DanhSachXeAdapter(Context context, int resource, ArrayList data) {
+    public DanhSachXeAdapter(Context context, int resource, ArrayList data, @Nullable ArrayList images) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
         this.data = data;
+        this.images = images;
     }
 
     @Override
@@ -52,6 +53,7 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
 
 
         if (data.size() > 0) {
+
             TextView tvTenXe = convertView.findViewById(R.id.tvTenXe);
             TextView tvTenHang = convertView.findViewById(R.id.tvTenHang);
             TextView tvMaXe = convertView.findViewById(R.id.tvMaXe);

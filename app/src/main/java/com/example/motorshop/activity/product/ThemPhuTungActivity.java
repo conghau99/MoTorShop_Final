@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,11 +18,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.motorshop.activity.R;
 import com.example.motorshop.datasrc.Accessory;
 import com.example.motorshop.datasrc.Image;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -107,19 +117,7 @@ public class ThemPhuTungActivity extends AppCompatActivity {
         ivPhoTo = (ImageView) findViewById(R.id.ivPhoto);
     }
 
-    private Accessory getPhuTung() {
-        Accessory item = new Accessory();
-        item.setName(edtTenPhuTung.getText().toString());
-        item.setAmount(Integer.parseInt(edtSoLuong.getText().toString()));
-        item.setPrice(Integer.parseInt(edtDonGia.getText().toString()));
-        item.setWarrantyPeriod(Integer.parseInt(edtHanBaoHanh.getText().toString()));
-        if (spnHangPhuTung.getSelectedItem().toString().equals("Ohlins"))
-            item.setBrandId("BR04");
-        if (spnHangPhuTung.getSelectedItem().toString().equals("Akrapovic"))
-            item.setBrandId("BR05");
 
-        return item;
-    }
 
     private Image getImage(){
         Image item = new Image();
@@ -136,6 +134,39 @@ public class ThemPhuTungActivity extends AppCompatActivity {
         return item;
     }
 
+    public void postData() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JSONObject object = new JSONObject();
+        try {
+            //input your API parameters
+            object.put("name",edtTenPhuTung.getText().toString());
+            object.put("amount",Integer.parseInt(edtSoLuong.getText().toString()));
+            object.put("price",Integer.parseInt(edtDonGia.getText().toString()));
+            object.put("warrantyPeriod",Integer.parseInt(edtHanBaoHanh.getText().toString()));
+            if (spnHangPhuTung.getSelectedItem().toString().equals("Ohlins"))
+                object.put("brandId","BR04");
+            if (spnHangPhuTung.getSelectedItem().toString().equals("Akrapovic"))
+                object.put("brandId","BR05");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://192.168.1.44:8080/api/motorshop/accessories";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response is: "+ response.toString().substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
 
     private boolean checkNullInfo(EditText e) {
         String s = "" + e.getText();
@@ -173,15 +204,11 @@ public class ThemPhuTungActivity extends AppCompatActivity {
             return;
         }
 
-        Accessory accessory = getPhuTung();
-        Image image = getImage();
-        //database.insertPT(phuTung);
+        postData();
         Toast.makeText(ThemPhuTungActivity.this, "Thêm Phụ Tùng Thành Công", Toast.LENGTH_SHORT).show();
         //finish();
         Intent intent = new Intent(this, QuanLyPhuTungActivity.class);
         startActivity(intent);
-
-        //startActivity(getIntent());
     }
 
     public void quayLaiPhuTung(View view) {

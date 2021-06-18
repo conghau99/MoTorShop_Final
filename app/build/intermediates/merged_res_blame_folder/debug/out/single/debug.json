@@ -8,12 +8,12 @@
         "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable_xe5.png.flat",
-        "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\drawable\\xe5.png"
-    },
-    {
         "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bill.png.flat",
         "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\drawable\\bill.png"
+    },
+    {
+        "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable_xe5.png.flat",
+        "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\drawable\\xe5.png"
     },
     {
         "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_options.png.flat",
@@ -84,12 +84,12 @@
         "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\drawable\\edit.png"
     },
     {
-        "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable_vision3.jpg.flat",
-        "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\drawable\\vision3.jpg"
-    },
-    {
         "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_ic_launcher_background.png.flat",
         "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable_vision3.jpg.flat",
+        "source": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\src\\main\\res\\drawable\\vision3.jpg"
     },
     {
         "merged": "C:\\Users\\cchvi\\AndroidStudioProjects\\MotorShop3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21_animated_check.xml.flat",

@@ -25,12 +25,11 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
     public ArrayList<Accessory> data;
     public ArrayList<Image> images;
 
-    public DanhSachPhuTungAdapter(Context context, int resource, ArrayList data, ArrayList images) {
+    public DanhSachPhuTungAdapter(Context context, int resource, ArrayList data) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
         this.data = data;
-        this.images = images;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
         if (data.size() > 0) {
             TextView tvTenPhuTung = convertView.findViewById(R.id.tvTenPhuTung);
             TextView tvTenHang = convertView.findViewById(R.id.tvTenHang);
-            TextView tvMaXe = convertView.findViewById(R.id.tvMaXe);
+            TextView tvMaPhuTung = convertView.findViewById(R.id.tvMaPhuTung);
             TextView tvSoLuong = convertView.findViewById(R.id.tvSoLuong);
             TextView tvDonGia = convertView.findViewById(R.id.tvDonGia);
             TextView tvHanBaoHanh = convertView.findViewById(R.id.tvHanBaoHanh);
@@ -63,9 +62,9 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
             ImageView ivPhuTung = convertView.findViewById(R.id.ivPhuTung);
 
             Accessory accessory = data.get(position);
-            Image image = images.get(position);
+            //Image image = images.get(position);
 
-            tvMaXe.setText(accessory.getId());
+            tvMaPhuTung.setText(accessory.getId());
             tvTenPhuTung.setText(accessory.getName());
 
             if (accessory.getBrandId().toString().equals("BR04"))
@@ -76,10 +75,11 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
             tvDonGia.setText(Integer.toString(accessory.getPrice()));
             tvHanBaoHanh.setText(accessory.getWarrantyPeriod() + " tháng") ;
 
+            //byte[] hinhAnh = image.getImage();
+
             //chuyển byte [] -> bitmap
-            byte[] hinhAnh = image.getImage();
-            Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
-            ivPhuTung.setImageBitmap(bitmap);
+            //Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
+            //ivPhuTung.setImageBitmap(bitmap);
         }
 
         return convertView;

@@ -29,7 +29,6 @@ public class LuaChonXe extends Dialog {
     Motor motor;
     Image image;
     QuanLyXeActivity quanLyXeActivity;
-    SuaXeActivity suaXeActivity;
     ArrayList<Motor> data = new ArrayList<>();
     ArrayList<Image> images = new ArrayList<>();
 
