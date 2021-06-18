@@ -47,6 +47,7 @@ public class ThemXeActivity extends AppCompatActivity {
     ImageView ivPhoTo;
     Button btnChonAnh;
 
+
     Motor motor;
 
     @Override
@@ -59,6 +60,7 @@ public class ThemXeActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+
         ArrayAdapter adapterHang = ArrayAdapter.createFromResource(this, R.array.Hang, R.layout.item_spinner);
         spnHangXe.setAdapter(adapterHang);
 
@@ -100,6 +102,16 @@ public class ThemXeActivity extends AppCompatActivity {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                             ivPhoTo.setImageBitmap(bitmap);
+
+                            //chuyển data imageview -> byte[]
+                            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+                            Bitmap bitmap1 = bitmapDrawable.getBitmap();
+                            bitmap1 = Bitmap.createScaledBitmap(bitmap1, 200, 200, true);
+                            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                            bitmap1.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+                            byte[] hinhAnh = byteArray.toByteArray();
+
+                            System.out.println(hinhAnh);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -152,26 +164,6 @@ public class ThemXeActivity extends AppCompatActivity {
 
         }
 
-        JSONObject object1 = new JSONObject();
-        try {
-            //input your API parameters
-
-            //chuyển data imageview -> byte[]
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
-            Bitmap bitmap = bitmapDrawable.getBitmap();
-            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
-            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
-            byte[] hinhAnh = byteArray.toByteArray();
-            String string = new String(hinhAnh);
-
-            //object1.put("image", Arrays.toString(hinhAnh).trim());
-            object1.put("image", hinhAnh);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         String url = "http://192.168.1.44:8080/api/motorshop/motors";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
@@ -185,6 +177,24 @@ public class ThemXeActivity extends AppCompatActivity {
                 Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
+
+        JSONObject object1 = new JSONObject();
+        try {
+            //input your API parameters
+
+            //chuyển data imageview -> byte[]
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+            byte[] hinhAnh = byteArray.toByteArray();
+
+            object1.put("image", hinhAnh);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         String url1 = "http://192.168.1.44:8080/api/motorshop/images";
         JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.POST, url1, object1,
@@ -201,7 +211,7 @@ public class ThemXeActivity extends AppCompatActivity {
         });
 
         requestQueue.add(jsonObjectRequest);
-        //requestQueue.add(jsonObjectRequest1);
+        requestQueue.add(jsonObjectRequest1);
     }
 
     public void postImage() {

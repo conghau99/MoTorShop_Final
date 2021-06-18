@@ -63,12 +63,12 @@ public class QuanLyXeActivity extends AppCompatActivity {
 
         setControl();
 
+        images = new ArrayList<>();
         motorList = new ArrayList<>();
         motors = new ArrayList<>();
-        images = new ArrayList<>();
 
-        extractMoTors();
         extractImages();
+        extractMoTors();
 
         setEvent();
         setClick();
@@ -93,9 +93,7 @@ public class QuanLyXeActivity extends AppCompatActivity {
                     searchMotor(newText);
 
                 } else {
-
                     motorList.clear();
-
                     extractMoTors();
                     extractImages();
 
@@ -168,19 +166,16 @@ public class QuanLyXeActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
                         Image image = new Image();
+                        image.setId(jsonObject.getInt("id"));
                         image.setMotorId(jsonObject.getInt("motorId"));
                         image.setImage(jsonObject.getString("image").getBytes());
-                        Log.d("deserialize", jsonObject.getString("image"));
+                        Log.d("deserialize", jsonObject.getString("motorId"));
                         images.add(image);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
-                danhSachXeAdapter.notifyDataSetChanged();
-                lvHienThiXe.setAdapter(danhSachXeAdapter);
 
             }
         }, new Response.ErrorListener() {

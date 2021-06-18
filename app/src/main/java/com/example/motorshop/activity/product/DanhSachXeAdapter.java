@@ -36,7 +36,7 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
 
     @Override
     public int getCount() {
-        return data.size();
+        return data.size() ;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
         convertView = inflater.inflate(R.layout.item_xe, null);
 
 
-        if (data.size() > 0) {
+        if (data.size() > 0 && images.size() > 0) {
 
             TextView tvTenXe = convertView.findViewById(R.id.tvTenXe);
             TextView tvTenHang = convertView.findViewById(R.id.tvTenHang);
@@ -80,11 +80,11 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
             tvHanBaoHanh.setText(motor.getWarrantyPeriod() + " tháng");
 
 
-            //byte[] hinhAnh = image.getImage();
+            byte[] hinhAnh = images.get(position).getImage();
 
             //chuyển byte [] -> bitmap
-            //Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
-            //ivXe.setImageBitmap(bitmap);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
+            ivXe.setImageBitmap(bitmap);
         }
 
         return convertView;

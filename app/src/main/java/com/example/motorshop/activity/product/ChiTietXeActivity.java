@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,7 +40,7 @@ public class ChiTietXeActivity extends AppCompatActivity {
     TextView tvTenSP, tvGia, tvMaXe;
     ImageView ivPhoTo;
     ListView lvHienThiChiTietXe;
-    Button btnSua, btnCapNhat, btnThem;
+    Button btnThem;
     List<MotorDetail> motorDetailList;
     List<Motor> motorList;
     List<MotorInfo> motorInfoList;
@@ -69,7 +70,12 @@ public class ChiTietXeActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        btnThem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
     private void setControl() {
@@ -77,8 +83,6 @@ public class ChiTietXeActivity extends AppCompatActivity {
         tvMaXe = (TextView) findViewById(R.id.tvMaXe);
         tvGia = (TextView) findViewById(R.id.tvGia);
         ivPhoTo = (ImageView) findViewById(R.id.ivPhoto);
-        btnSua = (Button) findViewById(R.id.btnSua);
-        btnCapNhat = (Button) findViewById(R.id.btnCapNhat);
         btnThem = (Button) findViewById(R.id.btnThem);
         lvHienThiChiTietXe = (ListView) findViewById(R.id.lvHienThiChiTietXe);
     }
@@ -101,23 +105,23 @@ public class ChiTietXeActivity extends AppCompatActivity {
                         motorDetail.setId(jsonArray.getInt(0));
                         motorDetail.setMotorId(Integer.parseInt(tvMaXe.getText().toString()));
 
-                        if (jsonArray.getString(2).equals("Số Khung")){
+                        if (jsonArray.getString(2).equals("Sá»‘ khung")){
                             motorInfo.setId(1);
                             motorInfo.setName("Số Khung");
                         }
-                        if (jsonArray.getString(2).equals("Số Sườn")){
+                        if (jsonArray.getString(2).equals("Sá»‘ sÆ°á»�n")){
                             motorInfo.setId(2);
                             motorInfo.setName("Số Sườn");
                         }
-                        if (jsonArray.getString(2).equals("Khối Lượng")){
+                        if (jsonArray.getString(2).equals("Khá»‘i lÆ°á»£ng")){
                             motorInfo.setId(3);
                             motorInfo.setName("Khối Lượng");
                         }
-                        if (jsonArray.getString(2).equals("Dài X Rộng X Cao")){
+                        if (jsonArray.getString(2).equals("DÃ i x Rá»™ng x Cao")){
                             motorInfo.setId(4);
                             motorInfo.setName("Dài X Rộng X Cao");
                         }
-                        if (jsonArray.getString(2).equals("Dung Tích Bình Xăng")){
+                        if (jsonArray.getString(2).equals("Dung tÃ\u00ADch bÃ¬nh xÄƒng")){
                             motorInfo.setId(7);
                             motorInfo.setName("Dung Tích Bình Xăng");
                         }
