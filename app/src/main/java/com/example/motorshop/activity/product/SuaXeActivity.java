@@ -52,7 +52,8 @@ public class SuaXeActivity extends AppCompatActivity {
     int ma;
 
     Motor motor;
-    @Nullable Image image;
+    @Nullable
+    Image image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,17 +132,38 @@ public class SuaXeActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             //input your API parameters
-            object.put("id",ma);
-            object.put("name",edtTenXe.getText().toString());
-            object.put("amount",Integer.parseInt(edtSoLuong.getText().toString()));
-            object.put("price",Integer.parseInt(edtDonGia.getText().toString()));
-            object.put("warrantyPeriod",Integer.parseInt(edtHanBaoHanh.getText().toString()));
+            object.put("id", ma);
+            object.put("name", edtTenXe.getText().toString());
+            object.put("amount", Integer.parseInt(edtSoLuong.getText().toString()));
+            object.put("price", Integer.parseInt(edtDonGia.getText().toString()));
+            object.put("warrantyPeriod", Integer.parseInt(edtHanBaoHanh.getText().toString()));
             if (spnHangXe.getSelectedItem().toString().equals("Honda"))
-                object.put("brandId","BR01");
+                object.put("brandId", "BR01");
             if (spnHangXe.getSelectedItem().toString().equals("Yamaha"))
-                object.put("brandId","BR02");
+                object.put("brandId", "BR02");
             if (spnHangXe.getSelectedItem().toString().equals("SYM"))
-                object.put("brandId","BR03");
+                object.put("brandId", "BR03");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject object1 = new JSONObject();
+        try {
+            //input your API parameters
+
+            object.put("motorId", ma);
+
+            //chuyển data imageview -> byte[]
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+            byte[] hinhAnh = byteArray.toByteArray();
+            String string = new String(hinhAnh);
+
+            object1.put("image", string);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -152,7 +174,7 @@ public class SuaXeActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response is: "+ response.toString());
+                        System.out.println("Response is: " + response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -160,12 +182,29 @@ public class SuaXeActivity extends AppCompatActivity {
                 Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
+
+        String url1 = "http://192.168.1.44:8080/api/motorshop/images";
+        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.PUT, url1, object1,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response is: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
         requestQueue.add(jsonObjectRequest);
+        requestQueue.add(jsonObjectRequest1);
+
     }
 
     public void editImage() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        JSONObject object = new JSONObject();
+        JSONObject object1 = new JSONObject();
         try {
             //input your API parameters
 
@@ -176,19 +215,20 @@ public class SuaXeActivity extends AppCompatActivity {
             ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
             byte[] hinhAnh = byteArray.toByteArray();
+            String string = new String(hinhAnh);
 
-            object.put("image", Arrays.toString(hinhAnh).trim());
+            object1.put("image", string);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         String url = "http://192.168.1.44:8080/api/motorshop/images";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, object1,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response is: "+ response.toString());
+                        System.out.println("Response is: " + response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -213,15 +253,15 @@ public class SuaXeActivity extends AppCompatActivity {
     public void ChonXe(Motor motor) {
         this.motor = motor;
         Intent intent = getIntent();
-        int maXe = intent.getIntExtra("maXe",0);
+        int maXe = intent.getIntExtra("maXe", 0);
         ma = maXe;
         String tenXe = intent.getStringExtra("tenXe");
         edtTenXe.setText(tenXe);
         int soLuong = (intent.getIntExtra("soLuong", 0));
         edtSoLuong.setText(Integer.toString(soLuong));
-        int donGia = intent.getIntExtra("donGia",0);
+        int donGia = intent.getIntExtra("donGia", 0);
         edtDonGia.setText(Integer.toString(donGia));
-        int hanBH = intent.getIntExtra("hanBH",0);
+        int hanBH = intent.getIntExtra("hanBH", 0);
         edtHanBaoHanh.setText(Integer.toString(hanBH));
 
     }
@@ -264,7 +304,7 @@ public class SuaXeActivity extends AppCompatActivity {
 
 
         editData();
-        editImage();
+        //editImage();
         Toast.makeText(SuaXeActivity.this, "Sửa Xe Thành Công", Toast.LENGTH_SHORT).show();
         //finish();
         Intent intent = new Intent(this, QuanLyXeActivity.class);

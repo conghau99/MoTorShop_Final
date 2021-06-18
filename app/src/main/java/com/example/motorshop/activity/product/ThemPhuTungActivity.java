@@ -152,6 +152,26 @@ public class ThemPhuTungActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        /*JSONObject object1 = new JSONObject();
+        try {
+            //input your API parameters
+
+            //chuyển data imageview -> byte[]
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+            byte[] hinhAnh = byteArray.toByteArray();
+            String string = new String(hinhAnh);
+
+            //object1.put("image", Arrays.toString(hinhAnh).trim());
+            object1.put("image", hinhAnh);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
         String url = "http://192.168.1.44:8080/api/motorshop/accessories";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
@@ -165,6 +185,7 @@ public class ThemPhuTungActivity extends AppCompatActivity {
                 Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
+
         requestQueue.add(jsonObjectRequest);
     }
 

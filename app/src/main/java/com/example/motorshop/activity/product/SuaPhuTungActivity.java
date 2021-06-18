@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -49,6 +50,7 @@ public class SuaPhuTungActivity extends AppCompatActivity {
     int ma;
 
     Accessory accessory;
+    @Nullable
     Image image;
 
     @Override
@@ -125,15 +127,15 @@ public class SuaPhuTungActivity extends AppCompatActivity {
     public void ChonPhuTung(Accessory accessory) {
         this.accessory = accessory;
         Intent intent = getIntent();
-        int maPT = intent.getIntExtra("maPT",0);
+        int maPT = intent.getIntExtra("maPT", 0);
         ma = maPT;
         String tenPT = intent.getStringExtra("tenPT");
         edtTenPhuTung.setText(tenPT);
         int soLuong = (intent.getIntExtra("soLuong", 0));
         edtSoLuong.setText(Integer.toString(soLuong));
-        int donGia = intent.getIntExtra("donGia",0);
+        int donGia = intent.getIntExtra("donGia", 0);
         edtDonGia.setText(Integer.toString(donGia));
-        int hanBH = intent.getIntExtra("hanBH",0);
+        int hanBH = intent.getIntExtra("hanBH", 0);
         edtHanBaoHanh.setText(Integer.toString(hanBH));
 
         //byte[] hinhAnh = intent.getByteArrayExtra("hinhAnh");
@@ -156,15 +158,15 @@ public class SuaPhuTungActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
         try {
             //input your API parameters
-            object.put("id",ma);
-            object.put("name",edtTenPhuTung.getText().toString());
-            object.put("amount",Integer.parseInt(edtSoLuong.getText().toString()));
-            object.put("price",Integer.parseInt(edtDonGia.getText().toString()));
-            object.put("warrantyPeriod",Integer.parseInt(edtHanBaoHanh.getText().toString()));
+            object.put("id", ma);
+            object.put("name", edtTenPhuTung.getText().toString());
+            object.put("amount", Integer.parseInt(edtSoLuong.getText().toString()));
+            object.put("price", Integer.parseInt(edtDonGia.getText().toString()));
+            object.put("warrantyPeriod", Integer.parseInt(edtHanBaoHanh.getText().toString()));
             if (spnHangPhuTung.getSelectedItem().toString().equals("Ohlins"))
-                object.put("brandId","BR04");
+                object.put("brandId", "BR04");
             if (spnHangPhuTung.getSelectedItem().toString().equals("Akrapovic"))
-                object.put("brandId","BR05");
+                object.put("brandId", "BR05");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -175,7 +177,7 @@ public class SuaPhuTungActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Response is: "+ response.toString().substring(0,500));
+                        System.out.println("Response is: " + response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override

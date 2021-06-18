@@ -13,47 +13,41 @@ com/example/motorshop/datasrc/Warranty.java
  com.example.motorshop.datasrc.Warranty
 com/example/motorshop/activity/main/MainAdapter.java
  com.example.motorshop.activity.main.MainAdapter
-com/example/motorshop/activity/product/dialog/LuaChonThemPhuTungDialog.java
- com.example.motorshop.activity.product.dialog.LuaChonThemPhuTungDialog
- com.example.motorshop.activity.product.dialog.LuaChonThemPhuTungDialog$1
- com.example.motorshop.activity.product.dialog.LuaChonThemPhuTungDialog$2
+com/example/motorshop/datasrc/Accessory.java
+ com.example.motorshop.datasrc.Accessory
 com/example/motorshop/datasrc/Depart.java
  com.example.motorshop.datasrc.Depart
 com/example/motorshop/datasrc/MotorInfo.java
  com.example.motorshop.datasrc.MotorInfo
-com/example/motorshop/activity/product/dialog/LuaChonPhuTung.java
- com.example.motorshop.activity.product.dialog.LuaChonPhuTung
- com.example.motorshop.activity.product.dialog.LuaChonPhuTung$1
- com.example.motorshop.activity.product.dialog.LuaChonPhuTung$2
- com.example.motorshop.activity.product.dialog.LuaChonPhuTung$2$1
- com.example.motorshop.activity.product.dialog.LuaChonPhuTung$2$2
- com.example.motorshop.activity.product.dialog.LuaChonPhuTung$3
+com/example/motorshop/activity/product/ThemXeActivity.java
+ com.example.motorshop.activity.product.ThemXeActivity
+ com.example.motorshop.activity.product.ThemXeActivity$1
+ com.example.motorshop.activity.product.ThemXeActivity$2
+ com.example.motorshop.activity.product.ThemXeActivity$3
+ com.example.motorshop.activity.product.ThemXeActivity$4
+ com.example.motorshop.activity.product.ThemXeActivity$5
+ com.example.motorshop.activity.product.ThemXeActivity$6
+ com.example.motorshop.activity.product.ThemXeActivity$7
+ com.example.motorshop.activity.product.ThemXeActivity$8
+ com.example.motorshop.activity.product.ThemXeActivity$9
 com/example/motorshop/activity/BuildConfig.java
  com.example.motorshop.activity.BuildConfig
 com/example/motorshop/datasrc/MotorDetail.java
  com.example.motorshop.datasrc.MotorDetail
-com/example/motorshop/activity/product/SuaPhuTungActivity.java
- com.example.motorshop.activity.product.SuaPhuTungActivity
- com.example.motorshop.activity.product.SuaPhuTungActivity$1
- com.example.motorshop.activity.product.SuaPhuTungActivity$2
- com.example.motorshop.activity.product.SuaPhuTungActivity$3
- com.example.motorshop.activity.product.SuaPhuTungActivity$4
- com.example.motorshop.activity.product.SuaPhuTungActivity$5
+com/example/motorshop/activity/product/DanhSachChiTietXeAdapter.java
+ com.example.motorshop.activity.product.DanhSachChiTietXeAdapter
 com/example/motorshop/datasrc/Bill.java
  com.example.motorshop.datasrc.Bill
-com/example/motorshop/activity/product/DanhSachXeAdapter.java
- com.example.motorshop.activity.product.DanhSachXeAdapter
-com/example/motorshop/activity/product/DanhSachPhuTungAdapter.java
- com.example.motorshop.activity.product.DanhSachPhuTungAdapter
+com/example/motorshop/activity/product/ChiTietXeActivity.java
+ com.example.motorshop.activity.product.ChiTietXeActivity
+ com.example.motorshop.activity.product.ChiTietXeActivity$1
+ com.example.motorshop.activity.product.ChiTietXeActivity$2
+com/example/motorshop/datasrc/Customer.java
+ com.example.motorshop.datasrc.Customer
 com/example/motorshop/datasrc/AccessoryDetail.java
  com.example.motorshop.datasrc.AccessoryDetail
-com/example/motorshop/activity/product/ThemPhuTungActivity.java
- com.example.motorshop.activity.product.ThemPhuTungActivity
- com.example.motorshop.activity.product.ThemPhuTungActivity$1
- com.example.motorshop.activity.product.ThemPhuTungActivity$2
- com.example.motorshop.activity.product.ThemPhuTungActivity$3
- com.example.motorshop.activity.product.ThemPhuTungActivity$4
- com.example.motorshop.activity.product.ThemPhuTungActivity$5
+com/example/motorshop/activity/product/DanhSachPhuTungAdapter.java
+ com.example.motorshop.activity.product.DanhSachPhuTungAdapter
 com/example/motorshop/datasrc/BillDetail.java
  com.example.motorshop.datasrc.BillDetail
 com/example/motorshop/datasrc/Brand.java
@@ -64,20 +58,15 @@ com/example/motorshop/activity/login/LoginActivity.java
  com.example.motorshop.activity.login.LoginActivity
 com/example/motorshop/datasrc/WarrantyDetail.java
  com.example.motorshop.datasrc.WarrantyDetail
-com/example/motorshop/datasrc/Customer.java
- com.example.motorshop.datasrc.Customer
-com/example/motorshop/datasrc/Accessory.java
- com.example.motorshop.datasrc.Accessory
-com/example/motorshop/activity/product/ChiTietXeActivity.java
- com.example.motorshop.activity.product.ChiTietXeActivity
- com.example.motorshop.activity.product.ChiTietXeActivity$1
- com.example.motorshop.activity.product.ChiTietXeActivity$2
-com/example/motorshop/activity/product/DanhSachChiTietXeAdapter.java
- com.example.motorshop.activity.product.DanhSachChiTietXeAdapter
-com/example/motorshop/activity/product/dialog/LuaChonThemXeDialog.java
- com.example.motorshop.activity.product.dialog.LuaChonThemXeDialog
- com.example.motorshop.activity.product.dialog.LuaChonThemXeDialog$1
- com.example.motorshop.activity.product.dialog.LuaChonThemXeDialog$2
+com/example/motorshop/activity/product/DanhSachXeAdapter.java
+ com.example.motorshop.activity.product.DanhSachXeAdapter
+com/example/motorshop/activity/product/ThemPhuTungActivity.java
+ com.example.motorshop.activity.product.ThemPhuTungActivity
+ com.example.motorshop.activity.product.ThemPhuTungActivity$1
+ com.example.motorshop.activity.product.ThemPhuTungActivity$2
+ com.example.motorshop.activity.product.ThemPhuTungActivity$3
+ com.example.motorshop.activity.product.ThemPhuTungActivity$4
+ com.example.motorshop.activity.product.ThemPhuTungActivity$5
 com/example/motorshop/activity/product/QuanLyXeActivity.java
  com.example.motorshop.activity.product.QuanLyXeActivity
  com.example.motorshop.activity.product.QuanLyXeActivity$1
@@ -88,6 +77,34 @@ com/example/motorshop/activity/product/QuanLyXeActivity.java
  com.example.motorshop.activity.product.QuanLyXeActivity$6
  com.example.motorshop.activity.product.QuanLyXeActivity$7
  com.example.motorshop.activity.product.QuanLyXeActivity$8
+com/example/motorshop/activity/product/dialog/LuaChonThemXeDialog.java
+ com.example.motorshop.activity.product.dialog.LuaChonThemXeDialog
+ com.example.motorshop.activity.product.dialog.LuaChonThemXeDialog$1
+ com.example.motorshop.activity.product.dialog.LuaChonThemXeDialog$2
+com/example/motorshop/activity/main/MainActivity.java
+ com.example.motorshop.activity.main.MainActivity
+ com.example.motorshop.activity.main.MainActivity$1
+com/example/motorshop/activity/product/QuanLyPhuTungActivity.java
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$1
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$2
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$3
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$4
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$5
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$6
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$7
+ com.example.motorshop.activity.product.QuanLyPhuTungActivity$8
+com/example/motorshop/activity/product/dialog/LuaChonThemPhuTungDialog.java
+ com.example.motorshop.activity.product.dialog.LuaChonThemPhuTungDialog
+ com.example.motorshop.activity.product.dialog.LuaChonThemPhuTungDialog$1
+ com.example.motorshop.activity.product.dialog.LuaChonThemPhuTungDialog$2
+com/example/motorshop/activity/product/dialog/LuaChonPhuTung.java
+ com.example.motorshop.activity.product.dialog.LuaChonPhuTung
+ com.example.motorshop.activity.product.dialog.LuaChonPhuTung$1
+ com.example.motorshop.activity.product.dialog.LuaChonPhuTung$2
+ com.example.motorshop.activity.product.dialog.LuaChonPhuTung$2$1
+ com.example.motorshop.activity.product.dialog.LuaChonPhuTung$2$2
+ com.example.motorshop.activity.product.dialog.LuaChonPhuTung$3
 com/example/motorshop/activity/product/SuaXeActivity.java
  com.example.motorshop.activity.product.SuaXeActivity
  com.example.motorshop.activity.product.SuaXeActivity$1
@@ -97,6 +114,8 @@ com/example/motorshop/activity/product/SuaXeActivity.java
  com.example.motorshop.activity.product.SuaXeActivity$5
  com.example.motorshop.activity.product.SuaXeActivity$6
  com.example.motorshop.activity.product.SuaXeActivity$7
+ com.example.motorshop.activity.product.SuaXeActivity$8
+ com.example.motorshop.activity.product.SuaXeActivity$9
 com/example/motorshop/activity/product/dialog/LuaChonXe.java
  com.example.motorshop.activity.product.dialog.LuaChonXe
  com.example.motorshop.activity.product.dialog.LuaChonXe$1
@@ -104,20 +123,10 @@ com/example/motorshop/activity/product/dialog/LuaChonXe.java
  com.example.motorshop.activity.product.dialog.LuaChonXe$2$1
  com.example.motorshop.activity.product.dialog.LuaChonXe$2$2
  com.example.motorshop.activity.product.dialog.LuaChonXe$3
-com/example/motorshop/activity/product/ThemXeActivity.java
- com.example.motorshop.activity.product.ThemXeActivity
- com.example.motorshop.activity.product.ThemXeActivity$1
- com.example.motorshop.activity.product.ThemXeActivity$2
- com.example.motorshop.activity.product.ThemXeActivity$3
- com.example.motorshop.activity.product.ThemXeActivity$4
- com.example.motorshop.activity.product.ThemXeActivity$5
- com.example.motorshop.activity.product.ThemXeActivity$6
- com.example.motorshop.activity.product.ThemXeActivity$7
-com/example/motorshop/activity/product/QuanLyPhuTungActivity.java
- com.example.motorshop.activity.product.QuanLyPhuTungActivity
- com.example.motorshop.activity.product.QuanLyPhuTungActivity$1
- com.example.motorshop.activity.product.QuanLyPhuTungActivity$2
- com.example.motorshop.activity.product.QuanLyPhuTungActivity$3
-com/example/motorshop/activity/main/MainActivity.java
- com.example.motorshop.activity.main.MainActivity
- com.example.motorshop.activity.main.MainActivity$1
+com/example/motorshop/activity/product/SuaPhuTungActivity.java
+ com.example.motorshop.activity.product.SuaPhuTungActivity
+ com.example.motorshop.activity.product.SuaPhuTungActivity$1
+ com.example.motorshop.activity.product.SuaPhuTungActivity$2
+ com.example.motorshop.activity.product.SuaPhuTungActivity$3
+ com.example.motorshop.activity.product.SuaPhuTungActivity$4
+ com.example.motorshop.activity.product.SuaPhuTungActivity$5

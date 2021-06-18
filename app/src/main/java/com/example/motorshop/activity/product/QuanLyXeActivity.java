@@ -47,11 +47,11 @@ import java.util.List;
 public class QuanLyXeActivity extends AppCompatActivity {
 
     ListView lvHienThiXe;
-    SearchView searchTenXe, searchHang;
     List<Motor> motorList;
     List<Motor> motors;
     @Nullable
     List<Image> images;
+    SearchView searchTenXe;
     DanhSachXeAdapter danhSachXeAdapter;
 
     @Override

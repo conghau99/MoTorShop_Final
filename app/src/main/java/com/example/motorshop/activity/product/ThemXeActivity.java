@@ -152,6 +152,26 @@ public class ThemXeActivity extends AppCompatActivity {
 
         }
 
+        JSONObject object1 = new JSONObject();
+        try {
+            //input your API parameters
+
+            //chuyển data imageview -> byte[]
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ivPhoTo.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray);
+            byte[] hinhAnh = byteArray.toByteArray();
+            String string = new String(hinhAnh);
+
+            //object1.put("image", Arrays.toString(hinhAnh).trim());
+            object1.put("image", hinhAnh);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         String url = "http://192.168.1.44:8080/api/motorshop/motors";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
@@ -165,7 +185,23 @@ public class ThemXeActivity extends AppCompatActivity {
                 Log.d("tag", "onErrorResponse: " + error.getMessage());
             }
         });
+
+        String url1 = "http://192.168.1.44:8080/api/motorshop/images";
+        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.POST, url1, object1,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("Response is: "+ response.toString().substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
         requestQueue.add(jsonObjectRequest);
+        //requestQueue.add(jsonObjectRequest1);
     }
 
     public void postImage() {
@@ -241,7 +277,7 @@ public class ThemXeActivity extends AppCompatActivity {
         }
 
         postData();
-        postImage();
+        //postImage();
         Toast.makeText(ThemXeActivity.this, "Thêm Xe Thành Công", Toast.LENGTH_SHORT).show();
         //finish();
         Intent intent = new Intent(this, QuanLyXeActivity.class);

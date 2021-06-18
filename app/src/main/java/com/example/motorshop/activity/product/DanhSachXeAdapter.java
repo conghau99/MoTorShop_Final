@@ -23,7 +23,8 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
     Context context;
     int resource;
     public ArrayList<Motor> data;
-    @Nullable public ArrayList<Image> images;
+    @Nullable
+    public ArrayList<Image> images;
 
     public DanhSachXeAdapter(Context context, int resource, ArrayList data, @Nullable ArrayList images) {
         super(context, resource);
@@ -39,8 +40,7 @@ public class DanhSachXeAdapter extends ArrayAdapter<Motor> {
     }
 
     @Override
-    public Motor getItem(int position)
-    {
+    public Motor getItem(int position) {
         return data.get(position);
     }
 

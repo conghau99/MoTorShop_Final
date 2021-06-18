@@ -19,17 +19,19 @@ import com.example.motorshop.datasrc.Image;
 
 import java.util.ArrayList;
 
-public class DanhSachPhuTungAdapter extends ArrayAdapter {
+public class DanhSachPhuTungAdapter extends ArrayAdapter<Accessory> {
     Context context;
     int resource;
     public ArrayList<Accessory> data;
+    @Nullable
     public ArrayList<Image> images;
 
-    public DanhSachPhuTungAdapter(Context context, int resource, ArrayList data) {
+    public DanhSachPhuTungAdapter(Context context, int resource, ArrayList data, @Nullable ArrayList images) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
         this.data = data;
+        this.images = images;
     }
 
     @Override
@@ -38,8 +40,7 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
     }
 
     @Override
-    public Accessory getItem(int position)
-    {
+    public Accessory getItem(int position) {
         return data.get(position);
     }
 
@@ -52,6 +53,7 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
 
 
         if (data.size() > 0) {
+
             TextView tvTenPhuTung = convertView.findViewById(R.id.tvTenPhuTung);
             TextView tvTenHang = convertView.findViewById(R.id.tvTenHang);
             TextView tvMaPhuTung = convertView.findViewById(R.id.tvMaPhuTung);
@@ -64,7 +66,7 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
             Accessory accessory = data.get(position);
             //Image image = images.get(position);
 
-            tvMaPhuTung.setText(accessory.getId());
+            tvMaPhuTung.setText(Integer.toString(accessory.getId()));
             tvTenPhuTung.setText(accessory.getName());
 
             if (accessory.getBrandId().toString().equals("BR04"))
@@ -73,7 +75,7 @@ public class DanhSachPhuTungAdapter extends ArrayAdapter {
                 tvTenHang.setText("Akrapovic");
             tvSoLuong.setText(Integer.toString(accessory.getAmount()));
             tvDonGia.setText(Integer.toString(accessory.getPrice()));
-            tvHanBaoHanh.setText(accessory.getWarrantyPeriod() + " tháng") ;
+            tvHanBaoHanh.setText(accessory.getWarrantyPeriod() + " tháng");
 
             //byte[] hinhAnh = image.getImage();
 

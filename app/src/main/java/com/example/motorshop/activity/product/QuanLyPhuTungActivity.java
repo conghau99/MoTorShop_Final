@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -37,10 +38,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuanLyPhuTungActivity extends AppCompatActivity {
+
     ListView lvHienThiPhuTung;
     List<Accessory> accessoryList;
+    List<Accessory> accessories;
+    @Nullable
     List<Image> images;
-    SearchView searchTenPT, searchHang;
+    SearchView searchTenPT;
     DanhSachPhuTungAdapter danhSachPhuTungAdapter;
 
     @Override
@@ -51,10 +55,13 @@ public class QuanLyPhuTungActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setControl();
+
         accessoryList = new ArrayList<>();
+        accessories = new ArrayList<>();
         images = new ArrayList<>();
 
         extractAccessories();
+        extractImages();
 
         setEvent();
         setClick();
@@ -62,39 +69,33 @@ public class QuanLyPhuTungActivity extends AppCompatActivity {
 
     private void setEvent() {
 
-        /*SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchTenPT.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchTenPT.setSubmitButtonEnabled(true);
         searchTenPT.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchPT(query);
-                return false;
+                searchAccessory(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchPT(newText);
+                if (newText.length() > 0) {
+                    accessoryList.clear();
+                    searchAccessory(newText);
+
+                } else {
+
+                    accessoryList.clear();
+
+                    extractAccessories();
+                    extractImages();
+
+                }
                 return false;
             }
         });
-
-        SearchManager searchManager1 = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchHang.setSearchableInfo(searchManager1.getSearchableInfo(getComponentName()));
-        searchHang.setSubmitButtonEnabled(true);
-        searchHang.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchNCC(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchNCC(newText);
-                return false;
-            }
-        });*/
 
     }
 
@@ -130,7 +131,97 @@ public class QuanLyPhuTungActivity extends AppCompatActivity {
                     }
                 }
 
-                danhSachPhuTungAdapter = new DanhSachPhuTungAdapter(getApplicationContext(), R.layout.item_phu_tung, (ArrayList) accessoryList);
+                danhSachPhuTungAdapter = new DanhSachPhuTungAdapter(getApplicationContext(), R.layout.item_phu_tung, (ArrayList) accessoryList, (ArrayList) images);
+                danhSachPhuTungAdapter.notifyDataSetChanged();
+                lvHienThiPhuTung.setAdapter(danhSachPhuTungAdapter);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
+
+    }
+
+    private void extractImages() {
+        String url = "http://192.168.1.44:8080/api/motorshop/images";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println("Response is: " + response.toString());
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        Image image = new Image();
+                        image.setMotorId(jsonObject.getInt("motorId"));
+                        image.setImage(jsonObject.getString("image").getBytes());
+                        Log.d("deserialize", jsonObject.getString("image"));
+                        images.add(image);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                danhSachPhuTungAdapter = new DanhSachPhuTungAdapter(getApplicationContext(), R.layout.item_phu_tung, (ArrayList) accessoryList, (ArrayList) images);
+                danhSachPhuTungAdapter.notifyDataSetChanged();
+                lvHienThiPhuTung.setAdapter(danhSachPhuTungAdapter);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", "onErrorResponse: " + error.getMessage());
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
+
+    }
+
+    private void searchAccessory(String keyword) {
+        ArrayList<Accessory> accessories = searchPT(keyword);
+        if (accessories != null) {
+            lvHienThiPhuTung.setAdapter(new DanhSachPhuTungAdapter(getApplicationContext(), R.layout.item_phu_tung, (ArrayList) accessoryList, (ArrayList) images));
+        }
+    }
+
+    private ArrayList<Accessory> searchPT(String keyword) {
+        String url = "http://192.168.1.44:8080/api/motorshop/accessories/name?name=" + keyword;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println("Response is: " + response.toString());
+                accessories = null;
+                accessories = new ArrayList<Accessory>();
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        Accessory accessory = new Accessory();
+                        accessory.setId(jsonObject.getInt("id"));
+                        accessory.setName(jsonObject.getString("name"));
+                        accessory.setAmount(jsonObject.getInt("amount"));
+                        accessory.setPrice(jsonObject.getInt("price"));
+                        accessory.setWarrantyPeriod(jsonObject.getInt("warrantyPeriod"));
+                        accessory.setBrandId(jsonObject.getString("brandId"));
+                        Log.d("deserialize", jsonObject.getString("name"));
+                        accessories.add(accessory);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                danhSachPhuTungAdapter = new DanhSachPhuTungAdapter(getApplicationContext(), R.layout.item_phu_tung, (ArrayList) accessories, (ArrayList) images);
                 danhSachPhuTungAdapter.notifyDataSetChanged();
                 lvHienThiPhuTung.setAdapter(danhSachPhuTungAdapter);
             }
@@ -142,7 +233,7 @@ public class QuanLyPhuTungActivity extends AppCompatActivity {
         });
 
         requestQueue.add(jsonArrayRequest);
-
+        return (ArrayList<Accessory>) accessories;
     }
 
     private void setClick() {
@@ -171,12 +262,12 @@ public class QuanLyPhuTungActivity extends AppCompatActivity {
             case R.id.motors:
                 Intent intent = new Intent(this, QuanLyXeActivity.class);
                 startActivity(intent);
-                Toast.makeText(QuanLyPhuTungActivity.this, "Phu Tung selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuanLyPhuTungActivity.this, "Xe selected", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.accessories:
                 Intent intent2 = new Intent(this, QuanLyPhuTungActivity.class);
                 startActivity(intent2);
-                Toast.makeText(QuanLyPhuTungActivity.this, "Xe selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuanLyPhuTungActivity.this, "Phu Tung selected", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
