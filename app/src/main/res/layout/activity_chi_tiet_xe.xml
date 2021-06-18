@@ -36,7 +36,7 @@
             android:text="HD01"
             android:textColor="#F44336"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvTenSP"
@@ -95,6 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@color/black" />
 
         </LinearLayout>
@@ -102,7 +103,7 @@
         <ListView
             android:id="@+id/lvHienThiChiTietXe"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="250dp" />
 
     </LinearLayout>
 

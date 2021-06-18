@@ -6,30 +6,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.motorshop.activity.R;
 import com.example.motorshop.datasrc.MotorDetail;
+import com.example.motorshop.datasrc.MotorInfo;
 
 import java.util.ArrayList;
 
-public class DanhSachChiTietXeAdapter extends ArrayAdapter {
+public class DanhSachChiTietXeAdapter extends ArrayAdapter<MotorDetail> {
     Context context;
     int resource;
     public ArrayList<MotorDetail> data;
+    public ArrayList<MotorInfo> motorInfos;
+    ChiTietXeActivity chiTietXeActivity;
 
-    public DanhSachChiTietXeAdapter(Context context, int resource, ArrayList data) {
+    public DanhSachChiTietXeAdapter(Context context, int resource, ArrayList data, ArrayList motorInfos) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
         this.data = data;
+        this.motorInfos = motorInfos;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return data.size() & motorInfos.size();
     }
 
     @Override
@@ -50,11 +55,12 @@ public class DanhSachChiTietXeAdapter extends ArrayAdapter {
             EditText edtChiTietXe = convertView.findViewById(R.id.edtChiTietXe);
 
             MotorDetail motorDetail = data.get(position);
+            MotorInfo motorInfo = motorInfos.get(position);
 
             edtChiTietXe.setEnabled(false);
             edtThongSoXe.setEnabled(false);
 
-            if (motorDetail.getMotorInfoId().equals(1)){
+            /*if (motorDetail.getMotorInfoId().equals(1)){
                 edtThongSoXe.setText("Số Khung");
             }
             if (motorDetail.getMotorInfoId().equals(2)){
@@ -68,17 +74,19 @@ public class DanhSachChiTietXeAdapter extends ArrayAdapter {
             }
             if (motorDetail.getMotorInfoId().equals(7)){
                 edtThongSoXe.setText("Dung tích bình xăng");
-            }
+            }*/
 
+            edtThongSoXe.setText(motorInfo.getName());
             edtChiTietXe.setText(motorDetail.getContent());
 
-            ((ChiTietXeActivity) context).btnSua.setOnClickListener(new View.OnClickListener() {
+            /*((ChiTietXeActivity) context).btnSua.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    edtChiTietXe.setEnabled(true);
-                    edtThongSoXe.setEnabled(true);
+                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                    //edtChiTietXe.setEnabled(true);
+                    //edtThongSoXe.setEnabled(true);
                 }
-            });
+            });*/
 
 
             /*chiTietXeActivity.btnCapNhat.setOnClickListener(new View.OnClickListener() {

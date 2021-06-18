@@ -49,7 +49,9 @@ public class QuanLyXeActivity extends AppCompatActivity {
     ListView lvHienThiXe;
     SearchView searchTenXe, searchHang;
     List<Motor> motorList;
-    @Nullable List<Image> images;
+    List<Motor> motors;
+    @Nullable
+    List<Image> images;
     DanhSachXeAdapter danhSachXeAdapter;
 
     @Override
@@ -60,7 +62,9 @@ public class QuanLyXeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setControl();
+
         motorList = new ArrayList<>();
+        motors = new ArrayList<>();
         images = new ArrayList<>();
 
         extractMoTors();
@@ -78,18 +82,60 @@ public class QuanLyXeActivity extends AppCompatActivity {
         searchTenXe.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchXe(query);
-                return false;
+                //searchMotor(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchXe(newText);
+                if (newText.length() > 0) {
+
+                    motorList.clear();
+                    for (int s = 0; s < motors.size(); s++) {
+                        final String text = motors.get(s).getName().toLowerCase().trim();
+                        if (text.contains(newText)) {
+                            Motor mt = new Motor();
+                            mt.setId(motors.get(s).getId());
+                            mt.setName(motors.get(s).getName());
+                            mt.setAmount(motors.get(s).getAmount());
+                            mt.setPrice(motors.get(s).getPrice());
+                            mt.setWarrantyPeriod(motors.get(s).getWarrantyPeriod());
+                            mt.setBrandId(motors.get(s).getBrandId());
+                            motorList.add(mt);
+                        }
+                    }
+
+                    danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
+                    danhSachXeAdapter.notifyDataSetChanged();
+                    lvHienThiXe.setAdapter(danhSachXeAdapter);
+
+                } else {
+
+                    motorList.clear();
+
+                    for (int s = 0; s < motors.size(); s++) {
+                        Motor mt = new Motor();
+                        mt.setId(motors.get(s).getId());
+                        mt.setName(motors.get(s).getName());
+                        mt.setAmount(motors.get(s).getAmount());
+                        mt.setPrice(motors.get(s).getPrice());
+                        mt.setWarrantyPeriod(motors.get(s).getWarrantyPeriod());
+                        mt.setBrandId(motors.get(s).getBrandId());
+                        motorList.add(mt);
+                    }
+
+                    danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
+                    danhSachXeAdapter.notifyDataSetChanged();
+                    lvHienThiXe.setAdapter(danhSachXeAdapter);
+
+                }
+                //searchMotor(newText);
                 return false;
             }
-        });
 
-    }
+    });
+
+}
 
     private void setControl() {
         lvHienThiXe = (ListView) findViewById(R.id.lvHienThiXe);
@@ -178,16 +224,26 @@ public class QuanLyXeActivity extends AppCompatActivity {
 
     }
 
+    private void searchMotor(String keyword) {
+        ArrayList<Motor> motors = searchXe(keyword);
+        if (motors != null) {
+            lvHienThiXe.setAdapter(new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images));
+        }
+    }
 
-    private void searchXe(String keyword){
-
+    private ArrayList<Motor> searchXe(String keyword) {
         String url = "http://192.168.1.44:8080/api/motorshop/motors/name?name=" + keyword;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        motorList.clear();
+
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 System.out.println("Response is: " + response.toString());
+                motors = null;
+                motors = new ArrayList<Motor>();
 
                 for (int i = 0; i < response.length(); i++) {
                     try {
@@ -200,17 +256,15 @@ public class QuanLyXeActivity extends AppCompatActivity {
                         motor.setWarrantyPeriod(jsonObject.getInt("warrantyPeriod"));
                         motor.setBrandId(jsonObject.getString("brandId"));
                         Log.d("deserialize", jsonObject.getString("name"));
-                        motorList.add(motor);
+                        motors.add(motor);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-                if (motorList != null){
-                    lvHienThiXe.setAdapter(new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images));
-                }
-
+                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
+                danhSachXeAdapter.notifyDataSetChanged();
+                lvHienThiXe.setAdapter(danhSachXeAdapter);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -220,7 +274,7 @@ public class QuanLyXeActivity extends AppCompatActivity {
         });
 
         requestQueue.add(jsonArrayRequest);
-
+        return (ArrayList<Motor>) motors;
     }
 
 

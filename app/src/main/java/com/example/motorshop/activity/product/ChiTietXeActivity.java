@@ -3,6 +3,7 @@ package com.example.motorshop.activity.product;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -21,6 +23,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.motorshop.activity.R;
 import com.example.motorshop.datasrc.Motor;
 import com.example.motorshop.datasrc.MotorDetail;
+import com.example.motorshop.datasrc.MotorInfo;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +41,8 @@ public class ChiTietXeActivity extends AppCompatActivity {
     ListView lvHienThiChiTietXe;
     Button btnSua, btnCapNhat, btnThem;
     List<MotorDetail> motorDetailList;
+    List<Motor> motorList;
+    List<MotorInfo> motorInfoList;
 
     String ma;
 
@@ -48,8 +54,12 @@ public class ChiTietXeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chi_tiet_xe);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setControl();
+
+        motorList = new ArrayList<>();
         motorDetailList = new ArrayList<>();
+        motorInfoList = new ArrayList<>();
 
         ChonXe(motor);
 
@@ -59,7 +69,6 @@ public class ChiTietXeActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-
 
     }
 
@@ -85,37 +94,46 @@ public class ChiTietXeActivity extends AppCompatActivity {
 
                 for (int i = 0; i < response.length(); i++) {
                     try {
-                        JSONObject jsonObject = response.getJSONObject(i);
+
+                        JSONArray jsonArray = response.getJSONArray(i);
                         MotorDetail motorDetail = new MotorDetail();
-                        motorDetail.setId(jsonObject.getInt("id"));
+                        MotorInfo motorInfo = new MotorInfo();
+                        motorDetail.setId(jsonArray.getInt(0));
                         motorDetail.setMotorId(Integer.parseInt(tvMaXe.getText().toString()));
 
-                        if (jsonObject.getString("name").equals("Số Khung")){
-                            motorDetail.setMotorInfoId(1);
+                        if (jsonArray.getString(2).equals("Số Khung")){
+                            motorInfo.setId(1);
+                            motorInfo.setName("Số Khung");
                         }
-                        if (jsonObject.getString("name").equals("Số Sườn")){
-                            motorDetail.setMotorInfoId(2);
+                        if (jsonArray.getString(2).equals("Số Sườn")){
+                            motorInfo.setId(2);
+                            motorInfo.setName("Số Sườn");
                         }
-                        if (jsonObject.getString("name").equals("Khối Lượng")){
-                            motorDetail.setMotorInfoId(3);
+                        if (jsonArray.getString(2).equals("Khối Lượng")){
+                            motorInfo.setId(3);
+                            motorInfo.setName("Khối Lượng");
                         }
-                        if (jsonObject.getString("name").equals("Dài x Rộng x Cao")){
-                            motorDetail.setMotorInfoId(4);
+                        if (jsonArray.getString(2).equals("Dài X Rộng X Cao")){
+                            motorInfo.setId(4);
+                            motorInfo.setName("Dài X Rộng X Cao");
                         }
-                        if (jsonObject.getString("name").equals("Dung tích bình xăng")){
-                            motorDetail.setMotorInfoId(7);
+                        if (jsonArray.getString(2).equals("Dung Tích Bình Xăng")){
+                            motorInfo.setId(7);
+                            motorInfo.setName("Dung Tích Bình Xăng");
                         }
 
-                        motorDetail.setContent(jsonObject.getString("content"));
-                        Log.d("deserialize", jsonObject.getString("content"));
+                        motorDetail.setContent(jsonArray.getString(3));
+
+                        Log.d("deserialize", jsonArray.getString(3));
                         motorDetailList.add(motorDetail);
+                        motorInfoList.add(motorInfo);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
 
-                danhSachChiTietXeAdapter = new DanhSachChiTietXeAdapter(getApplicationContext(), R.layout.item_chi_tiet_xe, (ArrayList) motorDetailList);
+                danhSachChiTietXeAdapter = new DanhSachChiTietXeAdapter(getApplicationContext(), R.layout.item_chi_tiet_xe, (ArrayList) motorDetailList, (ArrayList) motorInfoList);
                 danhSachChiTietXeAdapter.notifyDataSetChanged();
                 lvHienThiChiTietXe.setAdapter(danhSachChiTietXeAdapter);
 
@@ -138,8 +156,8 @@ public class ChiTietXeActivity extends AppCompatActivity {
         tvTenSP.setText(tenXe);
         int donGia = intent.getIntExtra("donGia", 0);
         tvGia.setText(Integer.toString(donGia) + "VND");
-        String maXe = intent.getStringExtra("maXe");
-        tvMaXe.setText(maXe);
+        int maXe = intent.getIntExtra("maXe", 0);
+        tvMaXe.setText(Integer.toString(maXe));
 
         //byte[] hinhAnh = intent.getByteArrayExtra("hinhAnh");
         //chuyển byte [] -> bitmap

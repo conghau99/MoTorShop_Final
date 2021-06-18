@@ -100,7 +100,6 @@ public class QuanLyPhuTungActivity extends AppCompatActivity {
 
     private void setControl() {
         searchTenPT = (SearchView) findViewById(R.id.searchTenPT);
-        searchHang = (SearchView) findViewById(R.id.searchHang);
         lvHienThiPhuTung = (ListView) findViewById(R.id.lvHienThiPhuTung);
     }
 
