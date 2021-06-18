@@ -82,60 +82,30 @@ public class QuanLyXeActivity extends AppCompatActivity {
         searchTenXe.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //searchMotor(query);
+                searchMotor(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() > 0) {
-
                     motorList.clear();
-                    for (int s = 0; s < motors.size(); s++) {
-                        final String text = motors.get(s).getName().toLowerCase().trim();
-                        if (text.contains(newText)) {
-                            Motor mt = new Motor();
-                            mt.setId(motors.get(s).getId());
-                            mt.setName(motors.get(s).getName());
-                            mt.setAmount(motors.get(s).getAmount());
-                            mt.setPrice(motors.get(s).getPrice());
-                            mt.setWarrantyPeriod(motors.get(s).getWarrantyPeriod());
-                            mt.setBrandId(motors.get(s).getBrandId());
-                            motorList.add(mt);
-                        }
-                    }
-
-                    danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
-                    danhSachXeAdapter.notifyDataSetChanged();
-                    lvHienThiXe.setAdapter(danhSachXeAdapter);
+                    searchMotor(newText);
 
                 } else {
 
                     motorList.clear();
 
-                    for (int s = 0; s < motors.size(); s++) {
-                        Motor mt = new Motor();
-                        mt.setId(motors.get(s).getId());
-                        mt.setName(motors.get(s).getName());
-                        mt.setAmount(motors.get(s).getAmount());
-                        mt.setPrice(motors.get(s).getPrice());
-                        mt.setWarrantyPeriod(motors.get(s).getWarrantyPeriod());
-                        mt.setBrandId(motors.get(s).getBrandId());
-                        motorList.add(mt);
-                    }
-
-                    danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
-                    danhSachXeAdapter.notifyDataSetChanged();
-                    lvHienThiXe.setAdapter(danhSachXeAdapter);
+                    extractMoTors();
+                    extractImages();
 
                 }
-                //searchMotor(newText);
                 return false;
             }
 
-    });
+        });
 
-}
+    }
 
     private void setControl() {
         lvHienThiXe = (ListView) findViewById(R.id.lvHienThiXe);
@@ -235,9 +205,6 @@ public class QuanLyXeActivity extends AppCompatActivity {
         String url = "http://192.168.1.44:8080/api/motorshop/motors/name?name=" + keyword;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        motorList.clear();
-
-
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -262,7 +229,7 @@ public class QuanLyXeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motorList, (ArrayList) images);
+                danhSachXeAdapter = new DanhSachXeAdapter(getApplicationContext(), R.layout.item_xe, (ArrayList) motors, (ArrayList) images);
                 danhSachXeAdapter.notifyDataSetChanged();
                 lvHienThiXe.setAdapter(danhSachXeAdapter);
             }
